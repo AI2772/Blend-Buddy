@@ -1,118 +1,132 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { useCallback, useEffect, useState } from "react";
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from "react-native"
+import LinearGradient from "react-native-linear-gradient";
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+function App() {
+  const [colors, setColors] = useState(generateRandomGradient())
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  const [currentTime, setCurrentTime] = useState('');
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const options = {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+      };
+      setCurrentTime(now.toLocaleTimeString([], options as any));
+    };
+
+    updateTime();
+    const intervalId = setInterval(updateTime, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const handleClick = useCallback(() => {
+    setColors(generateRandomGradient())
+  }, [])
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+    <LinearGradient colors={colors} style={{
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: "center",
+      gap: 4
+    }}>
+      <Text style={styles.clock}>{currentTime}</Text>
+      <View style={styles.box}>
+        <View style={styles.container}>
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+          <View style={[styles.colorBall, { backgroundColor: colors[0] }]}></View>
+          <LinearGradient style={styles.path} colors={colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+            <></>
+          </LinearGradient>
+          <View style={[styles.colorBall, { backgroundColor: colors[1] }]}></View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+        <TouchableOpacity onPress={handleClick} style={styles.button}>
+          <Text style={styles.title}>Generate</Text>
+        </TouchableOpacity>
+      </View>
+
+    </LinearGradient>
+  )
 }
+
+export default App
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  clock: {
+    color: "white",
+    fontSize: 40,
+    fontWeight: "700",
+    marginBottom: 100
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  box: {
+    position: "absolute",
+    width: '100%',
+    bottom: 0,
+    margin: "auto",
+    paddingVertical: 20,
+    backgroundColor: "white",
+    display: 'flex',
+    alignItems: "center",
+    justifyContent: "center",
+    borderTopRightRadius: 16,
+    borderTopLeftRadius: 16
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  container: {
+    width: Dimensions.get("window").width * 0.7,
+    display: 'flex',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  highlight: {
-    fontWeight: '700',
+  colorBall: {
+    width: 50,
+    height: 40,
+    borderRadius: 100,
   },
-});
+  path: {
+    width: '100%',
+    height: 10,
+    backgroundColor: "blue",
+    marginHorizontal: -20,
+    zIndex: 1
+  },
+  title: {
+    color: "white",
+    fontSize: 20,
+    textAlign: "center"
+  },
+  button: {
+    width: 240,
+    paddingVertical: 10,
+    backgroundColor: "skyblue",
+    borderRadius: 10,
+    marginVertical: 20
 
-export default App;
+  }
+})
+export const generateRandomGradient = (): any => {
+  const colors = [
+    getRandomColor('light'),
+    getRandomColor('medium'),
+  ];
+  return colors;
+};
+
+const getRandomColor = (brightness: string) => {
+  const randomColor = () => Math.floor(Math.random() * 156) + 100; // Generates a random value between 100 and 255
+
+  let color;
+  if (brightness === 'light') {
+    color = `rgb(${randomColor()}, ${randomColor()}, ${randomColor()})`;
+  } else if (brightness === 'medium') {
+    color = `rgb(${randomColor()}, ${randomColor()}, ${randomColor()})`;
+  }
+
+  return color;
+};
