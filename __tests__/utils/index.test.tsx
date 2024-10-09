@@ -22,7 +22,7 @@ describe('handleBackButton', () => {
     it('should log "navigating back"', () => {
         const consoleSpy = jest.spyOn(console, 'log');
         handleBackButton();
-        expect(consoleSpy).toHaveBeenCalledWith("navigating back");
+        expect(consoleSpy).toHaveBeenCalledWith('navigating back');
         consoleSpy.mockRestore();
     });
 });

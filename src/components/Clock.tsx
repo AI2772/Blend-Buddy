@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 function Clock() {
@@ -24,19 +24,19 @@ function Clock() {
     }, []);
     return (
         <Text style={styles.clock}>{currentTime}</Text>
-    )
+    );
 }
 
-export default Clock
+export default Clock;
 
 
 
 const styles = StyleSheet.create({
     clock: {
-        color: "white",
+        color: 'white',
         fontSize: 40,
-        fontWeight: "700",
-        marginBottom: 100
+        fontWeight: '700',
+        marginBottom: 100,
     },
 
-})
+});

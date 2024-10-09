@@ -20,5 +20,5 @@ const getRandomColor = (brightness: string): string => {
 };
 
 export const handleBackButton = (): void => {
-    console.log("navigating back")
-}
+    console.log('navigating back');
+};

@@ -26,4 +26,14 @@ describe('Home Screen', () => {
 
         expect(generateRandomGradient).toHaveBeenCalled();
     });
+
+    it('should handle if generateRandomGradient not works', () => {
+        (generateRandomGradient as jest.Mock).mockReturnValue(undefined);
+
+        const { getByTestId } = render(<Home />);
+
+        const gradientFound = getByTestId('color-not-loaded');
+        expect(gradientFound).toBeTruthy();
+
+    });
 });
