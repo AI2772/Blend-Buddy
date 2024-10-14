@@ -9,4 +9,9 @@ function App() {
   );
 }
 
-export default codePush(App);
+const codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_START, installMode: codePush.InstallMode.ON_NEXT_RESUME, updateDialog: true }
+export default codePush(codePushOptions)(App);
+
+// appcenter codepush release-react -a Delanki/BlendBuddy -d Staging
+// appcenter codepush release-react -a Delanki/BlendBuddy -d Production
+// appcenter codepush release-react -a Delanki/BlendBuddy -d CodePushDeploymentKey
