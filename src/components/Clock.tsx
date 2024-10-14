@@ -23,7 +23,7 @@ function Clock() {
         return () => clearInterval(intervalId);
     }, []);
     return (
-        <Text style={styles.clock}>-{currentTime}-</Text>
+        <Text style={styles.clock}>{currentTime}</Text>
     );
 }
 
