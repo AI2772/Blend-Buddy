@@ -24,7 +24,11 @@ function Home() {
                 justifyContent: 'center',
                 gap: 4,
             }}>
-            <MemoizedClock />
+            <View style={styles.clockWrapper}>
+                <Text style={styles.title}>{colors[0]}</Text>
+                <MemoizedClock />
+                <Text style={styles.title}>{colors[1]}</Text>
+            </View>
             <View style={styles.box}>
                 {colors.length ? <View testID='gradient-color' style={styles.container}>
                     <View style={[styles.colorBall, { backgroundColor: colors[0] }]} />
@@ -45,6 +49,14 @@ function Home() {
 export default Home;
 
 const styles = StyleSheet.create({
+    clockWrapper: {
+        gap: 10,
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingBottom: 196,
+        paddingTop: 20
+    },
     box: {
         position: 'absolute',
         width: '100%',
